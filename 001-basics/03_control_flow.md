@@ -210,3 +210,101 @@ int main() {
 ## Next Steps
 
 Now that you understand control flow, you're ready to move on to [Functions](04_functions.md)! 
+
+<!--
+EXERCISE 1: Transaction Fee Calculator
+----------------------------------------
+Using concepts: if-else chains, basic arithmetic
+
+Write a program that:
+1. Ask user for transaction amount in BTC
+2. Calculate fee based on amount:
+   - If amount < 0.001 BTC: fee = 1%
+   - If 0.001 <= amount < 0.01 BTC: fee = 0.5%
+   - If 0.01 <= amount < 0.1 BTC: fee = 0.2%
+   - If amount >= 0.1 BTC: fee = 0.1%
+3. Print both fee amount and final amount after fee
+
+Example structure:
+INPUT amount
+IF amount < 0.001
+    fee = amount * 0.01
+ELSE IF amount < 0.01
+    fee = amount * 0.005
+...and so on
+PRINT "Fee: " + fee
+PRINT "Final amount: " + (amount + fee)
+-->
+
+<!-- EXERCISE 2: Block Confirmation Counter
+----------------------------------------
+Using concepts: while loop, switch, break
+
+Write a program that:
+1. Start with confirmations = 0
+2. In a loop, ask user for block status:
+   'n' = new block found
+   'r' = chain reorg (remove last confirmation)
+   'q' = quit checking
+3. Keep track of confirmations (minimum 0)
+4. Print "Transaction Confirmed!" when confirmations reach 6
+
+Example structure:
+confirmations = 0
+WHILE true
+    PRINT "Current confirmations: " + confirmations
+    INPUT action
+    
+    SWITCH action
+        CASE 'n':
+            increment confirmations
+            IF confirmations >= 6
+                PRINT "Transaction Confirmed!"
+                BREAK from loop
+        CASE 'r':
+            IF confirmations > 0
+                decrement confirmations
+        CASE 'q':
+            BREAK from loop
+        DEFAULT:
+            PRINT "Invalid input"
+    
+    IF confirmations < 0
+        confirmations = 0 -->
+
+<!-- EXERCISE 3: Transaction Batch Processor
+----------------------------------------
+Using concepts: for loops, if-else, continue, input validation
+
+Write a program that:
+1. Ask user how many transactions to process
+2. For each transaction:
+   - Get amount and fee
+   - Validate inputs (no negative values)
+   - Skip transaction if invalid (use continue)
+   - Track total amount and fees
+3. Print summary at end
+
+Example structure:
+INPUT number_of_transactions
+total_amount = 0
+total_fees = 0
+
+FOR i from 1 to number_of_transactions
+    PRINT "Transaction " + i
+    INPUT amount
+    INPUT fee
+    
+    IF amount < 0 OR fee < 0
+        PRINT "Invalid transaction, skipping"
+        CONTINUE to next iteration
+    
+    IF fee > amount * 0.1
+        PRINT "Warning: High fee!"
+    
+    total_amount = total_amount + amount
+    total_fees = total_fees + fee
+
+PRINT "Processed " + number_of_transactions + " transactions"
+PRINT "Total amount: " + total_amount
+PRINT "Total fees: " + total_fees -->

@@ -1,313 +1,443 @@
 # Functions and Error Handling in C++
 
-Welcome to your fourth C++ tutorial! Here you'll learn how to create reusable blocks of code and handle errors safely.
+<details>
+<summary>📚 Module Information</summary>
+
+**Difficulty Level:** ⭐⭐ (Intermediate)  
+**Time to Complete:** ~40 minutes  
+**Prerequisites:** Variables, Control Flow, Memory Basics
+
+This module covers functions and error handling in C++, essential skills for writing maintainable and robust Bitcoin applications.
+</details>
 
 ## Learning Objectives
-- Understand what functions are and why we use them
-- Learn to create and use functions
-- Master error handling techniques
-- Practice with Bitcoin-relevant examples
+By the end of this module, you will be able to:
+- Create and use functions effectively in C++
+- Implement proper error handling mechanisms
+- Write robust Bitcoin-related functions
+- Use exceptions appropriately
+- Debug function-related issues
 
-## What is a Function?
+## Function Fundamentals
 
-A function is like a recipe - it takes ingredients (parameters) and produces a result:
+<details>
+<summary>🔨 Basic Function Concepts</summary>
+
+### What is a Function?
+A function is a reusable block of code that performs a specific task:
 ```cpp
-// Simple function that adds two numbers
-int add(int a, int b) {
-    return a + b;
+// Simple function that validates a Bitcoin amount
+bool isValidAmount(double amount) {
+    return amount > 0 && amount <= 21000000;
 }
-
-// Using the function
-int result = add(5, 3);  // result = 8
 ```
 
-## Basic Function Structure
-
-### Parts of a Function
+### Function Components
+1. **Return Type:** What the function gives back
+2. **Name:** What the function is called
+3. **Parameters:** Input values
+4. **Body:** The actual code
 ```cpp
 // Return type | Name | Parameters
-   int         sum    (int x, int y) {
-       // Function body
-       return x + y;   // Return statement
+   double      add    (double a, double b) {
+       return a + b;  // Body with return
    }
 ```
 
-### Practice Program: Simple Calculator
+### Function Types
+1. **Value-returning functions**
 ```cpp
-#include <iostream>
-
-double add(double a, double b) {
-    return a + b;
-}
-
-double subtract(double a, double b) {
-    return a - b;
-}
-
-int main() {
-    double num1 = 10.5;
-    double num2 = 5.25;
-    
-    std::cout << num1 << " + " << num2 << " = " << add(num1, num2) << std::endl;
-    std::cout << num1 << " - " << num2 << " = " << subtract(num1, num2) << std::endl;
-    
-    return 0;
+double calculateFee(double amount) {
+    return amount * 0.0001;  // Returns 0.01% fee
 }
 ```
 
-## Functions with Bitcoin Examples
-
-### 1. Basic Transaction Validation
+2. **Void functions**
 ```cpp
-bool isValidAmount(double amount) {
-    // Bitcoin amounts must be positive and not exceed total supply
-    return amount > 0 && amount <= 21000000;
-}
-
-// Usage
-double payment = 0.5;  // 0.5 BTC
-if (isValidAmount(payment)) {
-    std::cout << "Valid payment amount\n";
+void logTransaction(const std::string& txId) {
+    std::cout << "Processing transaction: " << txId << "\n";
 }
 ```
 
-### 2. Fee Calculator
+3. **Reference parameters**
 ```cpp
-double calculateFee(double amount, double feeRate) {
-    if (amount <= 0) {
-        return 0;  // Invalid amount
-    }
-    return amount * feeRate;
+void updateBalance(double& balance, double amount) {
+    balance += amount;
 }
-
-// Usage
-double transaction = 1.0;     // 1 BTC
-double fee = calculateFee(transaction, 0.0001);  // 0.0001 BTC fee
 ```
+</details>
 
 ## Error Handling
 
-### 1. Using Return Values
+<details>
+<summary>⚠️ Error Handling Techniques</summary>
+
+### 1. Return Values
 ```cpp
-bool sendPayment(double amount, double balance) {
-    if (amount <= 0) {
-        return false;  // Invalid amount
-    }
-    if (amount > balance) {
-        return false;  // Insufficient funds
-    }
-    // Process payment...
+bool processPayment(double amount, double& balance) {
+    if (amount <= 0) return false;
+    if (amount > balance) return false;
+    balance -= amount;
     return true;
 }
-
-// Usage
-if (!sendPayment(1.0, 0.5)) {
-    std::cout << "Payment failed!\n";
-}
 ```
 
-### 2. Using Exceptions
+### 2. Exceptions
 ```cpp
-#include <stdexcept>
-
-void transferFunds(double amount, double& fromBalance, double& toBalance) {
-    if (amount <= 0) {
-        throw std::invalid_argument("Amount must be positive");
-    }
-    if (amount > fromBalance) {
-        throw std::runtime_error("Insufficient funds");
-    }
-    
-    fromBalance -= amount;
-    toBalance += amount;
-}
-
-// Usage with try-catch
-try {
-    double account1 = 1.0;
-    double account2 = 0.0;
-    transferFunds(0.5, account1, account2);
-} catch (const std::exception& e) {
-    std::cout << "Error: " << e.what() << std::endl;
-}
-```
-
-## Practice Programs
-
-### 1. Wallet Manager
-```cpp
-#include <iostream>
-#include <stdexcept>
-
 class InsufficientFundsError : public std::runtime_error {
 public:
-    InsufficientFundsError() : std::runtime_error("Insufficient funds") {}
+    InsufficientFundsError() 
+        : std::runtime_error("Insufficient funds") {}
 };
 
-void withdraw(double& balance, double amount) {
+void transfer(double& from, double& to, double amount) {
     if (amount <= 0) {
-        throw std::invalid_argument("Invalid withdrawal amount");
+        throw std::invalid_argument("Invalid amount");
     }
-    if (amount > balance) {
+    if (amount > from) {
         throw InsufficientFundsError();
     }
-    balance -= amount;
-}
-
-void deposit(double& balance, double amount) {
-    if (amount <= 0) {
-        throw std::invalid_argument("Invalid deposit amount");
-    }
-    balance += amount;
-}
-
-int main() {
-    double walletBalance = 1.0;  // 1 BTC
-    
-    try {
-        std::cout << "Initial balance: " << walletBalance << " BTC\n";
-        
-        deposit(walletBalance, 0.5);
-        std::cout << "After deposit: " << walletBalance << " BTC\n";
-        
-        withdraw(walletBalance, 0.2);
-        std::cout << "After withdrawal: " << walletBalance << " BTC\n";
-        
-        // This should fail
-        withdraw(walletBalance, 2.0);
-        
-    } catch (const InsufficientFundsError& e) {
-        std::cout << "Error: " << e.what() << std::endl;
-    } catch (const std::invalid_argument& e) {
-        std::cout << "Error: " << e.what() << std::endl;
-    }
-    
-    return 0;
+    from -= amount;
+    to += amount;
 }
 ```
 
-### 2. Transaction Validator
+### 3. Error Codes
 ```cpp
-#include <iostream>
-#include <string>
+enum class TransactionError {
+    Success,
+    InvalidAmount,
+    InsufficientFunds,
+    NetworkError
+};
 
+TransactionError sendBitcoin(double amount) {
+    if (amount <= 0) return TransactionError::InvalidAmount;
+    if (amount > balance) return TransactionError::InsufficientFunds;
+    // ... send transaction ...
+    return TransactionError::Success;
+}
+```
+</details>
+
+## Bitcoin-Specific Functions
+
+<details>
+<summary>₿ Bitcoin Development Examples</summary>
+
+### 1. Transaction Validation
+```cpp
 struct Transaction {
     double amount;
     std::string sender;
     std::string receiver;
+    double fee;
 };
 
 bool validateTransaction(const Transaction& tx) {
-    // Check amount
-    if (tx.amount <= 0) return false;
+    // Amount validation
+    if (tx.amount <= 0 || tx.amount > 21000000) {
+        return false;
+    }
     
-    // Check sender/receiver
-    if (tx.sender.empty() || tx.receiver.empty()) return false;
-    if (tx.sender == tx.receiver) return false;
+    // Fee validation
+    if (tx.fee < 0 || tx.fee > tx.amount) {
+        return false;
+    }
+    
+    // Address validation
+    if (tx.sender.empty() || tx.receiver.empty()) {
+        return false;
+    }
     
     return true;
 }
-
-void processTransaction(const Transaction& tx) {
-    if (!validateTransaction(tx)) {
-        throw std::invalid_argument("Invalid transaction");
-    }
-    
-    std::cout << "Processing " << tx.amount << " BTC\n";
-    std::cout << "From: " << tx.sender << "\n";
-    std::cout << "To: " << tx.receiver << "\n";
-}
-
-int main() {
-    Transaction tx{
-        .amount = 0.5,
-        .sender = "Alice",
-        .receiver = "Bob"
-    };
-    
-    try {
-        processTransaction(tx);
-    } catch (const std::exception& e) {
-        std::cout << "Error: " << e.what() << std::endl;
-    }
-    
-    return 0;
-}
 ```
 
-## Common Mistakes to Avoid
-
-### 1. Forgetting Return Values
+### 2. Wallet Management
 ```cpp
-// Wrong: Missing return statement
-double getBalance() {
-    double balance = 100.0;
-    if (balance > 0) {
-        return balance;
-    }
-    // Missing return for balance <= 0!
-}
+class Wallet {
+private:
+    double balance;
+    std::vector<Transaction> history;
 
-// Correct: All paths return a value
-double getBalance() {
-    double balance = 100.0;
-    if (balance > 0) {
-        return balance;
+public:
+    // Safe balance update
+    void updateBalance(double amount) {
+        if (std::isfinite(amount)) {  // Check for valid number
+            balance += amount;
+        } else {
+            throw std::invalid_argument("Invalid amount");
+        }
     }
-    return 0.0;
-}
+    
+    // Safe transaction processing
+    bool processTransaction(const Transaction& tx) {
+        try {
+            if (!validateTransaction(tx)) {
+                return false;
+            }
+            updateBalance(-tx.amount - tx.fee);
+            history.push_back(tx);
+            return true;
+        } catch (const std::exception& e) {
+            std::cerr << "Transaction failed: " << e.what() << "\n";
+            return false;
+        }
+    }
+};
 ```
-
-### 2. Ignoring Error Cases
-```cpp
-// Wrong: No error handling
-void processPayment(double amount) {
-    // What if amount is negative?
-    std::cout << "Processing " << amount << " BTC\n";
-}
-
-// Correct: With error handling
-void processPayment(double amount) {
-    if (amount <= 0) {
-        throw std::invalid_argument("Invalid amount");
-    }
-    std::cout << "Processing " << amount << " BTC\n";
-}
-```
+</details>
 
 ## Knowledge Check
 
-Try to answer these questions:
-1. What are the parts of a function declaration?
-2. When should you use exceptions vs return values for errors?
-3. Why is error handling important in Bitcoin applications?
-4. What happens if a function has no return statement?
-5. How do you catch multiple types of exceptions?
+<details>
+<summary>🤔 Test Your Understanding</summary>
 
-## Bitcoin-Specific Function Tips
+### Question 1: Function Parameters
+What's wrong with this function?
+```cpp
+void updateWalletBalance(double balance, double amount) {
+    balance += amount;
+}
 
-1. Always validate amounts and balances
-2. Use exceptions for unexpected errors
-3. Return false/error codes for expected failure cases
-4. Document function requirements clearly
-5. Consider edge cases (zero amounts, maximum values)
+int main() {
+    double walletBalance = 100.0;
+    updateWalletBalance(walletBalance, 50.0);
+    std::cout << walletBalance;  // Still 100.0!
+}
+```
+<details>
+<summary>👉 Click to see answer</summary>
+
+- ❌ The function name is incorrect
+- ✅ Parameter should be passed by reference
+- ❌ The addition is wrong
+- ❌ Nothing is wrong
+
+**Explanation:** The function takes `balance` by value, creating a copy. To modify the original balance, it should use a reference parameter: `void updateWalletBalance(double& balance, double amount)`.
+</details>
+
+### Question 2: Error Handling
+Which error handling approach is best for this scenario?
+```cpp
+void processLargeTransaction(double amount) {
+    // Method A: Return bool
+    // Method B: Throw exception
+    // Method C: Return error code
+}
+```
+<details>
+<summary>👉 Click to see answer</summary>
+
+- ✅ Throw exception (Method B)
+- ❌ Return bool (Method A)
+- ❌ Return error code (Method C)
+
+**Explanation:** Large transactions are exceptional cases that can fail for multiple reasons (insufficient funds, network issues, validation errors). Exceptions provide:
+1. Detailed error information
+2. Cannot be ignored (unlike return values)
+3. Automatic propagation up the call stack
+</details>
+
+### Question 3: Function Design
+Analyze this Bitcoin transaction function:
+```cpp
+bool sendBitcoin(std::string from, std::string to, double amount) {
+    if (from == "") return false;
+    if (to == "") return false;
+    if (amount < 0) return false;
+    // ... send bitcoin ...
+    return true;
+}
+```
+What could be improved?
+<details>
+<summary>👉 Click to see answer</summary>
+
+Improvements needed:
+- ✅ Use references for strings (`const std::string&`)
+- ✅ Add more specific error handling
+- ✅ Validate maximum amount
+- ✅ Add proper address format validation
+- ❌ Change return type to void
+
+**Better Version:**
+```cpp
+enum class TxError {
+    Success,
+    InvalidSender,
+    InvalidReceiver,
+    InvalidAmount,
+    NetworkError
+};
+
+TxError sendBitcoin(const std::string& from, 
+                    const std::string& to, 
+                    double amount) {
+    if (!isValidAddress(from)) return TxError::InvalidSender;
+    if (!isValidAddress(to)) return TxError::InvalidReceiver;
+    if (amount <= 0 || amount > 21000000) {
+        return TxError::InvalidAmount;
+    }
+    // ... send bitcoin ...
+    return TxError::Success;
+}
+```
+</details>
+
+### Question 4: Exception Safety
+What's wrong with this error handling?
+```cpp
+void processPayment(double& balance, double amount) {
+    balance -= amount;  // Deduct first
+    if (amount <= 0) {
+        throw std::invalid_argument("Invalid amount");
+    }
+    if (amount > balance) {
+        throw std::runtime_error("Insufficient funds");
+    }
+}
+```
+<details>
+<summary>👉 Click to see answer</summary>
+
+Issues:
+- ✅ Balance is modified before validation
+- ✅ No exception safety guarantee
+- ✅ Potential negative balance
+- ❌ Wrong exception types
+
+**Better Version:**
+```cpp
+void processPayment(double& balance, double amount) {
+    // Validate first
+    if (amount <= 0) {
+        throw std::invalid_argument("Invalid amount");
+    }
+    if (amount > balance) {
+        throw std::runtime_error("Insufficient funds");
+    }
+    // Modify after validation
+    balance -= amount;
+}
+```
+</details>
+
+### Question 5: Function Overloading
+Which overload will be called?
+```cpp
+void processAmount(int amount) { std::cout << "int\n"; }
+void processAmount(double amount) { std::cout << "double\n"; }
+void processAmount(long amount) { std::cout << "long\n"; }
+
+int main() {
+    processAmount(42.0f);
+}
+```
+<details>
+<summary>👉 Click to see answer</summary>
+
+- ❌ int version
+- ✅ double version
+- ❌ long version
+- ❌ Compilation error
+
+**Explanation:** The `float` argument (42.0f) will be promoted to `double`, calling the double version. This is important in Bitcoin applications where precision matters!
+</details>
+</details>
+
+## Practice Exercises
+
+<details>
+<summary>💻 Hands-on Practice</summary>
+
+### Exercise 1: Basic Transaction Handler (⭐ Beginner)
+Create functions to handle basic Bitcoin transactions.
+
+<details>
+<summary>👉 Requirements</summary>
+
+1. Implement transaction validation
+2. Handle basic error cases
+3. Track transaction history
+4. Use appropriate error handling
+</details>
+
+<details>
+<summary>👉 Solution Framework</summary>
+
+```cpp
+struct Transaction {
+    std::string sender;
+    std::string receiver;
+    double amount;
+};
+
+class TransactionHandler {
+private:
+    std::vector<Transaction> history;
+
+public:
+    bool validateTransaction(const Transaction& tx) {
+        // Your validation code here
+        return false;
+    }
+    
+    void processTransaction(const Transaction& tx) {
+        // Your processing code here
+    }
+};
+```
+</details>
+
+### Exercise 2: Wallet Functions (⭐⭐ Intermediate)
+Implement a wallet system with proper error handling.
+
+<details>
+<summary>👉 Requirements</summary>
+
+1. Support deposits and withdrawals
+2. Implement proper error handling
+3. Track transaction history
+4. Add balance validation
+5. Use exceptions appropriately
+</details>
+
+### Exercise 3: Advanced Transaction System (⭐⭐⭐ Advanced)
+Build a comprehensive transaction system with advanced error handling.
+
+<details>
+<summary>👉 Requirements</summary>
+
+1. Implement multi-signature support
+2. Add transaction fee calculation
+3. Handle network errors
+4. Implement rollback mechanism
+5. Add comprehensive logging
+</details>
+</details>
 
 ## Next Steps
 
-1. **Experiment!** Try:
-   - Creating different types of functions
-   - Handling various error cases
-   - Building a complete transaction system
+<details>
+<summary>🎯 Moving Forward</summary>
 
-2. **Challenge Yourself:**
-   - Add more validation rules
-   - Implement complex error handling
-   - Create a multi-function program
+### What You've Learned
+- Function creation and usage
+- Error handling techniques
+- Bitcoin-specific function design
+- Exception safety
+- Best practices
 
-3. When you're ready, move on to your first project: [Hash Calculator](../projects/01_hash_calculator.md)
+### Where to Go Next
+1. Complete the practice exercises
+2. Review the knowledge check questions
+3. Experiment with the code examples
+4. Move on to [Classes and Objects](06_classes.md)
 
-Remember:
-- Test all possible error cases
-- Always handle errors appropriately
-- Document your functions
-- Keep functions focused and simple
+### Additional Resources
+- [C++ Functions Reference](https://en.cppreference.com/w/cpp/language/functions)
+- [Exception Handling Guide](https://en.cppreference.com/w/cpp/language/exceptions)
+- [Bitcoin Development Resources](https://bitcoin.org/en/development)
+</details>

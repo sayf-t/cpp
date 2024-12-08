@@ -5,6 +5,156 @@ Welcome to this hands-on C++ learning curriculum! This course is designed to tea
 ## Course Philosophy
 This curriculum focuses on C++ concepts that are heavily used in Bitcoin Core development while maintaining a beginner-friendly approach. The projects are designed to gradually introduce you to patterns and practices common in cryptocurrency development.
 
+## Pedagogical Requirements for All Modules
+
+Each module in this curriculum must adhere to these pedagogical standards:
+
+1. **Complete Concept Coverage**
+   - Every concept mentioned must be thoroughly explained
+   - All knowledge check questions must be supported by prior content
+   - No assumptions about prior knowledge unless explicitly listed in prerequisites
+
+2. **Progressive Learning Structure**
+   - Concepts build upon each other in a logical sequence
+   - Each new topic references and reinforces previous learning
+   - Complex topics are broken down into digestible chunks
+
+3. **Practical Examples and References**
+   - Every theoretical concept must have a practical example
+   - Code examples must be complete and runnable
+   - Real-world Bitcoin Core references where applicable
+
+4. **Knowledge Validation**
+   - All knowledge check questions must have clear answers in the content
+   - Practice exercises must reinforce the learning objectives
+   - Self-assessment opportunities throughout each module
+
+5. **Clear Learning Objectives**
+   - Each module starts with clear, measurable objectives
+   - Content directly maps to stated objectives
+   - End-of-module validation confirms objective completion
+
+6. **Comprehensive Resources**
+   - Required reading materials clearly listed
+   - Additional resources for deeper learning
+   - References to relevant Bitcoin Core documentation
+
+7. **Interactive Learning**
+   - Hands-on exercises for each major concept
+   - Debugging exercises to reinforce understanding
+   - Project-based learning opportunities
+
+8. **Error Prevention and Handling**
+   - Common mistakes and how to avoid them
+   - Debugging strategies for typical errors
+   - Best practices for error handling
+
+## Module Structure and Content Requirements
+
+Each module in this curriculum must follow this consistent structure:
+
+1. **Introduction and Objectives** (Always Visible)
+   - Clear learning objectives
+   - Prerequisites if any
+   - Real-world applications in Bitcoin development
+
+2. **Concept Presentation** (Always Visible)
+   - Theory with Bitcoin-relevant examples
+   - Visual aids where applicable
+   - Code snippets demonstrating concepts
+   - Basic usage examples
+
+3. **Core Concepts** (Always Visible)
+   - Detailed explanations
+   - Syntax and usage
+   - Best practices
+   - Common use cases
+   ```cpp
+   // Example code showing concept usage
+   ```
+
+4. **Interactive Examples** (Collapsible Solutions)
+   ```markdown
+   Example problem or scenario
+   <details>
+   <summary>👉 Click to see solution</summary>
+   Solution with explanation
+   </details>
+   ```
+
+5. **Code-Along Exercises** (Collapsible Solutions)
+   ```markdown
+   Exercise description and requirements
+   <details>
+   <summary>👉 Click to see Step 1</summary>
+   Step-by-step solution
+   </details>
+   ```
+
+6. **Knowledge Check Questions** (Questions Visible, Answers Collapsible)
+   ```markdown
+   1. What is X and when should you use it?
+   <details>
+   <summary>👉 Click to see answer</summary>
+   Detailed answer with examples
+   </details>
+   ```
+
+7. **Practice Challenges** (Description Visible, Solutions Collapsible)
+   ```markdown
+   Challenge: Create X that does Y
+   Requirements:
+   - Requirement 1
+   - Requirement 2
+   
+   <details>
+   <summary>👉 Click to see step-by-step solution</summary>
+   Detailed solution steps
+   </details>
+   ```
+
+8. **Common Mistakes** (Problems Visible, Solutions Collapsible)
+   ```markdown
+   Common Mistake: Using X instead of Y
+   <details>
+   <summary>👉 Click to see explanation and solution</summary>
+   Why it's wrong and how to fix it
+   </details>
+   ```
+
+9. **Next Steps and Resources** (Always Visible)
+   - Links to related topics
+   - Additional reading
+   - Practice suggestions
+   - Real Bitcoin Core examples
+
+## Content Visibility Guidelines
+
+### Always Visible Content
+- Learning objectives
+- Prerequisites
+- Core concept explanations
+- Basic syntax and usage
+- Simple code examples
+- Section introductions
+- Challenge requirements
+- Question prompts
+
+### Collapsible Content
+- Detailed solutions
+- Step-by-step guides
+- Knowledge check answers
+- Practice challenge solutions
+- Common mistake solutions
+- Advanced examples
+- Extended explanations
+
+This structure ensures that:
+1. Students can read and understand core concepts without interruption
+2. They can attempt exercises before seeing solutions
+3. They can test their knowledge before checking answers
+4. They can try challenges independently before viewing solutions
+
 ## Current Status (Last Updated: Today)
 
 🟢 = Complete and Tested
